@@ -92,3 +92,104 @@ Vue.createApp({
     }
     
 }).mount('#app');
+
+// Med update till AcessToken var 60:e min, Vet ej om de funkar helt
+
+// Vue.createApp({
+//     data() {
+//         return {
+//             KEY: 'fYzsg6smhs3eysZLUGsTBrFl2cQa',
+//             SECRET: '0es63wTfFJAsteDgl6s7Khskb2Ia',
+//             stop: 'svingeln',
+//             ACCESS_TOKEN: '',
+//             STOP_ID: '',
+//             departures: [],
+//         };
+//     },
+//     created() {
+//         this.getAccessToken()
+//             .then(() => this.getStopId())
+//             .then(() => this.getDepartures())
+//             .catch((error) => console.error(error));
+//     },
+//     methods: {
+//         async getAccessToken() {
+//             const url = 'https://api.vasttrafik.se/token';
+//             const headers = {
+//                 Authorization: `Basic ${btoa(`${this.KEY}:${this.SECRET}`)}`,
+//                 'Content-Type': 'application/x-www-form-urlencoded',
+//             };
+//             const body = new URLSearchParams({
+//                 format: 'json',
+//                 grant_type: 'client_credentials',
+//             });
+
+//             const response = await fetch(url, {
+//                 method: 'POST',
+//                 headers,
+//                 body,
+//             });
+
+//             const data = await response.json();
+//             this.ACCESS_TOKEN = data.access_token;
+//             setTimeout(() => {
+//               this.getAccessToken()
+//             }, (data.expires_in - 60) * 1000);
+//         },
+//         async getStopId() {
+//             const url = 'https://api.vasttrafik.se/bin/rest.exe/v2/location.name';
+//             const headers = {
+//                 Authorization: `Bearer ${this.ACCESS_TOKEN}`,
+//             };
+//             const params = new URLSearchParams({
+//                 format: 'json',
+//                 input: this.stop,
+//             });
+
+//             const response = await fetch(`${url}?${params}`, {
+//                 headers,
+//             });
+
+//             const data = await response.json();
+//             this.STOP_ID = data.LocationList.StopLocation[0].id;
+//         },
+//         async getDepartures() {
+//             const url = 'https://api.vasttrafik.se/bin/rest.exe/v2/departureBoard';
+//             const headers = {
+//                 Authorization: `Bearer ${this.ACCESS_TOKEN}`,
+//             };
+//             const now = new Date();
+//             const params = new URLSearchParams({
+//                 format: 'json',
+//                 id: this.STOP_ID,
+//                 date: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
+//                 time: `${now.getHours()}:${now.getMinutes()}`,
+//             });
+
+//             const response = await fetch(`${url}?${params}`, {
+//                 headers,
+//             });
+
+//             const data = await response.json();
+//             const serverDateTime = new Date(
+//                 `${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`
+//             );
+
+//             this.departures = data.DepartureBoard.Departure.map((departure) => {
+//                 const { sname, direction, time, date, rtTime, rtDate } = departure;
+
+//                 const departureDateTime = rtTime
+//                     ? new Date(`${rtDate} ${rtTime}`)
+//                     : new Date(`${date} ${time}`);
+
+//                 const diff = Math.round(
+//                     (departureDateTime.getTime() - serverDateTime.getTime()) / 1000 / 60
+//                 );
+//             },
+//         },
+//         async generateAccessToken() {
+//             await this.getAccessToken();
+//         }
+//     }
+    
+// }).mount('#app');
