@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,14 +9,15 @@
     <script src="test.js" defer></script>
     <title>School and Back</title>
 </head>
-
 <body>
     <div id="app">
         <h1>Avgångar från {{stop}}</h1>
+        <button id="tokenUpdate" @click="generateToken">tokenUpdate</button>
         <ul>
             <li v-for="(departure, index) in departures" :key="index">
-                {{departure.sname}} mot {{departure.direction}} avgår kl {{departure.time}}
-                (real), om {{departure.departureTime}} minuter
+                {{departure.sname}} mot {{departure.direction}}
+                avgår kl {{departure.time}}
+                om {{departure.diff}} minuter
             </li>
         </ul>
     </div>
