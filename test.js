@@ -66,31 +66,34 @@ Vue.createApp({
                 date: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
                 time: `${now.getHours()}:${now.getMinutes()}`,
             });
-
+        
             const response = await fetch(`${url}?${params}`, {
                 headers,
             });
-
+        
             const data = await response.json();
             const serverDateTime = new Date(
                 `${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`
             );
-
+        
             this.departures = data.DepartureBoard.Departure.map((departure) => {
                 const { sname, direction, time, date, rtTime, rtDate } = departure;
-
+        
                 const departureDateTime = rtTime
                     ? new Date(`${rtDate} ${rtTime}`)
                     : new Date(`${date} ${time}`);
-
+        
                 const diff = Math.round(
                     (departureDateTime.getTime() - serverDateTime.getTime()) / 1000 / 60
                 );
                 return { sname, direction, time, rtTime, diff };
+            }).filter(departure => {
+                // filtrera bort avgångar som redan har avgått
+                const departureDateTime = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${departure.time}`);
+                return departureDateTime.getTime() > now.getTime();
             });
         },
         
-
     }
 
 }).mount('#app');
