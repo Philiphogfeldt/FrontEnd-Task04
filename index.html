@@ -10,14 +10,22 @@
     <title>School and Back</title>
 </head>
 <body>
+    <h1>SwooshTrafik</h1>
     <div id="app">
-        <h1>Avgångar från {{stop}}</h1>
-        <button id="tokenUpdate" @click="generateToken">tokenUpdate</button>
+        <h2>Avgångar från {{stop}}</h2>
         <ul>
             <li v-for="(departure, index) in departures" :key="index">
                 {{departure.sname}} mot {{departure.direction}}
                 avgår kl {{departure.time}}
                 om {{departure.diff}} minuter
+            </li>
+        </ul>
+        <h2>Avgångar från {{stop2}}</h2>
+        <ul>
+            <li v-for="(departure2, index) in departures2" :key="index">
+                {{departure.sname2}} mot {{departure.direction2}}
+                avgår kl {{departure.time2}}
+                om {{departure.diff2}} minuter
             </li>
         </ul>
     </div>
