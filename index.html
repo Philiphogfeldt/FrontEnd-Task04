@@ -6,28 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="test.js" defer></script>
+    <script src="main.js" defer></script>
     <title>School and Back</title>
 </head>
 <body>
     <h1>SwooshTrafik</h1>
     <div id="app">
-        <h2>Avgångar från {{stop}}</h2>
+        <h2>Avgångar från {{stopName}}</h2>
+        <form @submit.prevent="updateStop(userInput)">
+          <label for="stop-input">Skriv in en hållplats:</label>
+          <input type="text" id="stop-input" v-model="userInput">
+          <button type="submit">Uppdatera</button>
+        </form>
         <ul>
-            <li v-for="(departure, index) in departures" :key="index">
-                {{departure.sname}} mot {{departure.direction}}
-                avgår kl {{departure.time}}
-                om {{departure.diff}} minuter
-            </li>
+          <li v-for="(departure, index) in departures" :key="index">
+            {{departure.sname}} mot {{departure.direction}} avgår kl {{departure.time}} om {{departure.diff}} minuter
+          </li>
         </ul>
-        <h2>Avgångar från {{stop2}}</h2>
-        <ul>
-            <li v-for="(departure2, index) in departures2" :key="index">
-                {{departure.sname2}} mot {{departure.direction2}}
-                avgår kl {{departure.time2}}
-                om {{departure.diff2}} minuter
-            </li>
-        </ul>
-    </div>
+      </div>
 </body>
 </html>

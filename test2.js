@@ -5,20 +5,33 @@ Vue.createApp({
             SECRET: 'KruYoiK1rDkPfJ_P44Qy_zdfxL4a',
             stop: 'Sjömarkenskolan',
             stop2: 'svingeln',
-            ACCESS_TOKEN: '67effa0e-f71e-393b-9012-e5117f0de90b',
+            ACCESS_TOKEN: '',
             STOP_ID: '',
             STOP_ID2: '',
             departures: [],
             departures2: [],
         };
     },
+
     created() {
         this.getAccessToken()
-            .then(() => this.getStopId())
-            .then(() => this.getStopId2())
-            .then(() => this.getDepartures())
-            .then(() => this.getDepartures2())
+            .then(() => Promise.all([
+                this.getStopId('sjömarkenskolan'),
+                this.getStopId('svingeln')
+            ]))
+            .then(([stopId1, stopId2]) => Promise.all([
+                this.getDepartures(stopId1),
+                this.getDepartures(stopId2)
+            ]))
+            .then(([departures1, departures2]) => {
+                this.departures = departures1;
+                this.departures2 = departures2;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     },
+
     methods: {
         async getAccessToken() {
             const url = 'https://api.vasttrafik.se/token';
@@ -49,68 +62,20 @@ Vue.createApp({
                 format: 'json',
                 input: this.stop,
             });
-
-            const response = await fetch(`${url}?${params}`, {
-                headers,
-            });
-
-            const data = await response.json();
-            this.STOP_ID = data.LocationList.StopLocation[0].id;
-        },
-        async getStopId2() {
-            const url = 'https://api.vasttrafik.se/bin/rest.exe/v2/location.name';
-            const headers = {
-                Authorization: `Bearer ${this.ACCESS_TOKEN}`,
-            };
-            const params = new URLSearchParams({
+            const params2 = new URLSearchParams({
                 format: 'json',
                 input: this.stop2,
             });
 
-            const response = await fetch(`${url}?${params}`, {
-                headers,
-            });
+            const response = await Promise.all([
+                fetch(`${url}?${params}`, { headers }),
+                fetch(`${url}?${params2}`, { headers }),
+            ]);
 
-            const data = await response.json();
-            this.STOP_ID2 = data.LocationList.StopLocation[0].id;
-        },
-        async getDepartures2() {
-            const url = 'https://api.vasttrafik.se/bin/rest.exe/v2/departureBoard';
-            const headers = {
-                Authorization: `Bearer ${this.ACCESS_TOKEN}`,
-            };
-            const now = new Date();
-            const params = new URLSearchParams({
-                format: 'json',
-                id: this.STOP_ID2,
-                date: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
-                time: `${now.getHours()}:${now.getMinutes()}`,
-            });
+            const [data, data2] = await Promise.all([response[0].json(), response[1].json()]);
 
-            const response = await fetch(`${url}?${params}`, {
-                headers,
-            });
-
-            const data = await response.json();
-            const serverDateTime = new Date(
-                `${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`
-            );
-
-            this.departures2 = data.DepartureBoard.Departure.map((departure2) => {
-                const { sname2, direction2, time2, date2, rtTime2, rtDate2 } = departure2;
-
-                const departureDateTime2 = rtTime2
-                    ? new Date(`${rtDate2} ${rtTime2}`)
-                    : new Date(`${date2} ${time2}`);
-
-                const diff = Math.round(
-                    (departureDateTime2.getTime() - serverDateTime.getTime()) / 1000 / 60
-                );
-                return { sname2, direction2, time2, rtTime2, diff2 };
-            }).filter(departure2 => {
-                const departureDateTime2 = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${departure2.time}`);
-                return departureDateTime2.getTime() > now.getTime();
-            });
+            this.STOP_ID = data.LocationList.StopLocation[0].id;
+            this.STOP_ID2 = data2.LocationList.StopLocation[0].id;
         },
 
         async getDepartures() {
@@ -125,33 +90,49 @@ Vue.createApp({
                 date: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
                 time: `${now.getHours()}:${now.getMinutes()}`,
             });
-
-            const response = await fetch(`${url}?${params}`, {
-                headers,
+            const params2 = new URLSearchParams({
+                format: 'json',
+                id: this.STOP_ID2,
+                date: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
+                time: `${now.getHours()}:${now.getMinutes()}`,
             });
 
-            const data = await response.json();
-            const serverDateTime = new Date(
-                `${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`
-            );
+            const response = await Promise.all([
+                fetch(`${url}?${params}`, { headers }),
+                fetch(`${url}?${params2}`, { headers }),
+            ]);
 
-            this.departures = data.DepartureBoard.Departure.map((departure) => {
-                const { sname, direction, time, date, rtTime, rtDate } = departure;
+            const [data, data2] = await Promise.all([response[0].json(), response[1].json()]);
 
-                const departureDateTime = rtTime
-                    ? new Date(`${rtDate} ${rtTime}`)
-                    : new Date(`${date} ${time}`);
+            const serverDateTime = new Date(`${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`);
+            const serverDateTime2 = new Date(`${data2.DepartureBoard.serverdate} ${data2.DepartureBoard.servertime}`);
 
-                const diff = Math.round(
-                    (departureDateTime.getTime() - serverDateTime.getTime()) / 1000 / 60
-                );
-                return { sname, direction, time, rtTime, diff };
-            }).filter(departure => {
-                const departureDateTime = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${departure.time}`);
-                return departureDateTime.getTime() > now.getTime();
-            });
+            this.departures = data.DepartureBoard.Departure
+                .map((departure) => {
+                    const { sname, direction, time, date, rtTime, rtDate } = departure;
+
+                    const departureDateTime = rtTime
+                        ? new Date(`${rtDate} ${rtTime}`)
+                        : new Date(`${date} ${time}`);
+
+                    const diff = Math.floor((departureDateTime - serverDateTime) / 1000 / 60);
+
+                    return { sname, direction, time, diff };
+                });
+
+            this.departures2 = data2.DepartureBoard.Departure
+                .map((departure) => {
+                    const { sname, direction, time, date, rtTime, rtDate } = departure;
+
+                    const departureDateTime = rtTime
+                        ? new Date(`${rtDate} ${rtTime}`)
+                        : new Date(`${date} ${time}`);
+
+                    const diff2 = Math.floor((departureDateTime - serverDateTime2) / 1000 / 60);
+
+                    return { sname2: sname, direction2: direction, time2: time, diff2 };
+                });
         },
     }
 
 }).mount('#app');
-
