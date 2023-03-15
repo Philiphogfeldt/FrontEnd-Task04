@@ -1,12 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+<<<<<<< Updated upstream
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+=======
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="main.css">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="main.js" defer></script>
+  <title>School and Back</title>
+>>>>>>> Stashed changes
 </head>
+
 <body>
+<<<<<<< Updated upstream
     
+=======
+  <div id="topHead">
+    <h1>SwooshTrafik</h1>
+  </div>
+  <div id="app">
+    <div id="topForm">
+      <h2>Avgångar från {{stopName}}</h2>
+      <form @submit.prevent="updateStop(userInput)">
+        <label for="stop-input">Skriv in en hållplats:</label>
+        <input type="text" id="stop-input" v-model="userInput">
+        <button type="submit">Uppdatera</button>
+      </form>
+    </div>
+    <div id="buttonBox">
+      <button id="svingelnButton" @click.prevent="updateStop('svingeln')">svingeln</button>
+      <button id="sjomarkenButton" @click.prevent="updateStop('sjömarkenskolan')">sjömarkenskolan</button>
+      <button id="temperaturButton" @click.prevent="updateStop('temperatur gatan')">temperatur gatan</button>
+    </div>
+    <div id="listBoxLeft">
+      <ul>
+        <li v-for="(departure, index) in departures" :key="index">
+          {{departure.sname}} mot {{departure.direction}} avgår kl {{departure.time}} om {{departure.diff}} minuter
+        </li>
+      </ul>
+    </div>
+  </div>
+>>>>>>> Stashed changes
 </body>
+
 </html>

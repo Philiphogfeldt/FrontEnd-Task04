@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+body {
+    display: grid;
+    justify-content: center;
+
+}
+
+#app {
+    display: grid;
+    width: 800px;
+    justify-content: center;
+
+}
+
+#topHead {
+    display: grid;
+    justify-content: left;
+    margin-left: 15%;
+}
+
+#topForm {
+    display: grid;
+    justify-content: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+label {
+    font-size: large;
+}
+
+#stop-input {
+    height: 1.2em;
+    padding: 3px;
+    font-size: large;
+
+}
+
+#buttonBox {
+    display: grid;
+    grid-template:
+        'a b c' /1fr 1fr 1fr;
+    justify-content: center;
+    padding: 10px;
+    gap: 20px;
+}
+
+button {
+    font-size: large;
+    height: 2em;
+    padding-left: 5px;
+    padding-right: 5px;
+}
