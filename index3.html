@@ -2,10 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="main.css" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="test.js" defer></script>
     <title>School and Back</title>
 </head>
 
@@ -13,16 +14,17 @@
     <h1>SwooshTrafik</h1>
     <div id="app">
         <h2>Avgångar från {{stopName}}</h2>
-        <form @submit.prevent="updateStop">
+        <form v-on:submit.prevent="updateStop(userInput)">
             <label for="stop-input">Skriv in en hållplats:</label>
-            <input type="text" id="stop-input" v-model="userInput" />
+            <input type="text" id="stop-input" v-model="userInput">
             <button type="submit">Uppdatera</button>
         </form>
         <div v-if="departures[0].length">
             <h3>List 1:</h3>
             <ul>
                 <li v-for="(departure, index) in departures[0]" :key="index">
-                    {{departure.name}} avgår kl {{departure.departureTime}} om
+                    {{departure.name}} avgår kl 
+                    {{departure.departureTime}} om
                     {{departure.minutes}} minuter
                 </li>
             </ul>
@@ -46,5 +48,3 @@
             </ul>
         </div>
     </div>
-</body>
-</html>
