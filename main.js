@@ -57,6 +57,10 @@ Vue.createApp({
         async getDepartures() {
             await this.getAccessToken();
             await this.getStopId();
+            
+            if (this.userInput.trim() === ''){
+                return;
+            }
 
             const url = 'https://api.vasttrafik.se/bin/rest.exe/v2/departureBoard';
             const callInfo = {
