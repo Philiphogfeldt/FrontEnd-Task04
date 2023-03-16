@@ -21,7 +21,15 @@
       <button type="submit">Uppdatera</button>
     </form>
     <ul>
-      <li v-for="(departure, index) in departures" :key="index">
+      <li v-for="(departure, index) in departures[0]" :key="index">
+        {{departure.sname}} mot 
+        {{departure.direction}} avgår kl
+        {{departure.time}} om 
+        {{departure.diff}} minuter
+      </li>
+    </ul>
+    <ul>
+      <li v-for="(departure, index) in departures[1]" :key="index">
         {{departure.sname}} mot 
         {{departure.direction}} avgår kl 
         {{departure.time}} om 
@@ -29,15 +37,7 @@
       </li>
     </ul>
     <ul>
-      <li v-for="(departure, index) in departures2" :key="index">
-        {{departure.sname}} mot 
-        {{departure.direction}} avgår kl 
-        {{departure.time}} om 
-        {{departure.diff}} minuter
-      </li>
-    </ul>
-    <ul>
-      <li v-for="(departure, index) in departures3" :key="index">
+      <li v-for="(departure, index) in departures[2]" :key="index">
         {{departure.sname}} mot 
         {{departure.direction}} avgår kl 
         {{departure.time}} om 

@@ -8,6 +8,7 @@ Vue.createApp({
             departures: [[], [], []],
             nextList: 0,
             userInput: '',
+            serverDateTime: null
         };
     },
     // created() {
@@ -78,10 +79,20 @@ Vue.createApp({
             const serverDateTime = new Date(
                 `${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`
             );
-            // if(this.nextList === 2){
-            //     this.nextList = 0;
-            // }
-            // else{}
+            if(this.nextList === 3){
+                this.nextList = 0;
+                this.sortList(data, serverDateTime, now);
+            }
+            else{
+                this.sortList(data, serverDateTime, now);
+            }
+            
+        },
+        updateStop(stopName) {
+            this.stopName = stopName;
+            this.getDepartures();
+        },
+        sortList(data, serverDateTime, now){
             this.departures[this.nextList] = data.DepartureBoard.Departure
                 .map((departure) => {
                     const { sname, direction, time, date, realTime, realDate } = departure;
@@ -104,18 +115,7 @@ Vue.createApp({
                 .sort((a, b) => a.diff - b.diff)
                 .slice(0, 5);
                 this.nextList++;
-        },
-        updateStop(stopName) {
-            this.stopName = stopName;
-            this.getDepartures();
-        },
-        // checkLists(){
-        //     if (totalLists === 1){
-        //         this.departures2 === this.departures
-        //     }
-        //     else if (totalLists === 2){
-        //         this.departures3 === this.departures2
-        //     }
-        // }
+
+        }
     }
 }).mount('#app');
