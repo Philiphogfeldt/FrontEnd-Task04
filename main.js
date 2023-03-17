@@ -19,15 +19,12 @@ Vue.createApp({
         if (savedDepartures) {
             this.departures = JSON.parse(savedDepartures);
         }
-        // this.getAccessToken()
-        // .then(() => this.getStopId())
-        // .then(() => this.getDepartures())
     },
     methods: {
         updateTime() {
             let timNow = new Date;
             this.currentTime =
-                `${this.dubbledigits(timNow.getHours())}:
+            `${this.dubbledigits(timNow.getHours())}:
             ${this.dubbledigits(timNow.getMinutes())}:
             ${this.dubbledigits(timNow.getSeconds())}`;
         },
@@ -135,10 +132,15 @@ Vue.createApp({
                 })
                 .sort((a, b) => a.diff - b.diff)
                 .slice(0, 5);
-            this.nextList++;
+                this.nextList++;
 
         },
-
+        clearAllLists() {
+            for (let i = 0; i < this.departures.length; i++) {
+                localStorage.clear(this.departures[i]);
+                this.departures[i] = [];
+            }
+        },
 
     }
 }).mount('#app');

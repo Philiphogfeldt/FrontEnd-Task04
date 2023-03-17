@@ -20,7 +20,7 @@
     <form @submit.prevent="updateStop(userInput)">
       <label for="stop-input">Skriv in en hållplats:</label>
       <input type="text" id="stop-input" v-model="userInput" placeholder="Where u wanna go">
-      <button type="submit">Uppdatera</button>
+      <button type="submit" id="updateButton">Uppdatera</button>
     </form>
     <ul>
       <h3>Lista 1</h3>
@@ -49,6 +49,7 @@
         {{departure.diff}} minuter
       </li>
     </ul>
+    <button type="submit" id="clearButton" @click="clearAllLists()">Clear lists</button>
   </div>
 </body>
 </html>
