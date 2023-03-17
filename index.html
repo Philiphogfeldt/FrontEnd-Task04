@@ -22,6 +22,7 @@
       <input type="text" id="stop-input" v-model="userInput" placeholder="Where u wanna go">
       <button type="submit" id="updateButton">Uppdatera</button>
     </form>
+    <!-- <p>{{stopId[0]}} {{stopId[1]}} {{stopId[2]}}</p> -->
     <ul>
       <h3>Lista 1</h3>
       <li v-for="(departure, index) in departures[0]" :key="index">

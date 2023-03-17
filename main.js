@@ -4,9 +4,10 @@ Vue.createApp({
             key: 'xOJnjrt9fhMMyvSANCOq9Cmrgiwa',
             secret: 'KruYoiK1rDkPfJ_P44Qy_zdfxL4a',
             accessToken: '67effa0e-f71e-393b-9012-e5117f0de90b',
-            stopId: '',
+            stopId: ['', '', ''],
             departures: [[], [], []],
             nextList: 0,
+            nextStopId: 0,
             userInput: '',
             serverDateTime: null,
             currentTime: '00:00:00'
@@ -19,6 +20,10 @@ Vue.createApp({
         if (savedDepartures) {
             this.departures = JSON.parse(savedDepartures);
         }
+        // const savedStopId = localStorage.getItem('stopId');
+        // if (savedStopId) {
+        //     this.stopId = JSON.parse(savedStopId);
+        // }
     },
     methods: {
         updateTime() {
@@ -59,6 +64,7 @@ Vue.createApp({
             const dataForSearch = new URLSearchParams({
                 format: 'json',
                 input: this.userInput,
+                // input: this.userInput[this.nextSearchInput],
             });
 
             const response = await fetch(`${url}?${dataForSearch}`, {
@@ -67,11 +73,12 @@ Vue.createApp({
 
             const data = await response.json();
             this.stopId = data.LocationList.StopLocation[0].id;
+            // this.nextSearchInput++;
         },
         async getDepartures() {
             await this.getAccessToken();
             await this.getStopId();
-
+            // this.userInput[this.nextSearchInput].trim..
             if (this.userInput.trim() === '') {
                 return;
             }
@@ -104,7 +111,16 @@ Vue.createApp({
             else {
                 this.sortList(data, serverDateTime, now);
             }
+
+            // if (this.nextStopId === 3){
+            //     this.nextStopId = 0;
+            // }
+            // else{
+            //     this.nextStopId = this.nextStopId;
+            // }
+            
             localStorage.setItem('departures', JSON.stringify(this.departures));
+            // localStorage.setItem('stopId', JSON.stringify(this.stopId))
         },
         updateStop(stopName) {
             this.stopName = stopName;
@@ -133,6 +149,7 @@ Vue.createApp({
                 .sort((a, b) => a.diff - b.diff)
                 .slice(0, 5);
                 this.nextList++;
+                // this.nextStopId++;
 
         },
         clearAllLists() {
@@ -140,6 +157,10 @@ Vue.createApp({
                 localStorage.clear(this.departures[i]);
                 this.departures[i] = [];
             }
+            // for (let i = 0; i < this.stopId.length; i++) {
+            //     localStorage.clear(this.stopId[i]);
+            //     this.stopId[i] = '';
+            // }
         },
 
     }
