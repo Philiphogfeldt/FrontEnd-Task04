@@ -13,16 +13,21 @@ Vue.createApp({
         };
     },
     created() {
-            setInterval(this.updateTime, 1000);
-            // this.getAccessToken()
-            // .then(() => this.getStopId())
-            // .then(() => this.getDepartures())
+        setInterval(this.updateTime, 1000);
+
+        const savedDepartures = localStorage.getItem('departures');
+        if (savedDepartures) {
+            this.departures = JSON.parse(savedDepartures);
+        }
+        // this.getAccessToken()
+        // .then(() => this.getStopId())
+        // .then(() => this.getDepartures())
     },
     methods: {
         updateTime() {
             let timNow = new Date;
-            this.currentTime = 
-            `${this.dubbledigits(timNow.getHours())}:
+            this.currentTime =
+                `${this.dubbledigits(timNow.getHours())}:
             ${this.dubbledigits(timNow.getMinutes())}:
             ${this.dubbledigits(timNow.getSeconds())}`;
         },
@@ -102,7 +107,7 @@ Vue.createApp({
             else {
                 this.sortList(data, serverDateTime, now);
             }
-
+            localStorage.setItem('departures', JSON.stringify(this.departures));
         },
         updateStop(stopName) {
             this.stopName = stopName;
