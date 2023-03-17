@@ -8,15 +8,27 @@ Vue.createApp({
             departures: [[], [], []],
             nextList: 0,
             userInput: '',
-            serverDateTime: null
+            serverDateTime: null,
+            currentTime: '00:00:00'
         };
     },
-    // created() {
-    //     this.getAccessToken()
-    //         .then(() => this.getStopId())
-    //         .then(() => this.getDepartures())
-    // },
+    created() {
+            setInterval(this.updateTime, 1000);
+            // this.getAccessToken()
+            // .then(() => this.getStopId())
+            // .then(() => this.getDepartures())
+    },
     methods: {
+        updateTime() {
+            let timNow = new Date;
+            this.currentTime = 
+            `${this.dubbledigits(timNow.getHours())}:
+            ${this.dubbledigits(timNow.getMinutes())}:
+            ${this.dubbledigits(timNow.getSeconds())}`;
+        },
+        dubbledigits(number) {
+            return number < 10 ? '0' + number : number;
+        },
         async getAccessToken() {
             const url = 'https://api.vasttrafik.se/token';
             const callInfo = {
@@ -57,8 +69,8 @@ Vue.createApp({
         async getDepartures() {
             await this.getAccessToken();
             await this.getStopId();
-            
-            if (this.userInput.trim() === ''){
+
+            if (this.userInput.trim() === '') {
                 return;
             }
 
@@ -83,20 +95,20 @@ Vue.createApp({
             const serverDateTime = new Date(
                 `${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`
             );
-            if(this.nextList === 3){
+            if (this.nextList === 3) {
                 this.nextList = 0;
                 this.sortList(data, serverDateTime, now);
             }
-            else{
+            else {
                 this.sortList(data, serverDateTime, now);
             }
-            
+
         },
         updateStop(stopName) {
             this.stopName = stopName;
             this.getDepartures();
         },
-        sortList(data, serverDateTime, now){
+        sortList(data, serverDateTime, now) {
             this.departures[this.nextList] = data.DepartureBoard.Departure
                 .map((departure) => {
                     const { sname, direction, time, date, realTime, realDate } = departure;
@@ -118,8 +130,10 @@ Vue.createApp({
                 })
                 .sort((a, b) => a.diff - b.diff)
                 .slice(0, 5);
-                this.nextList++;
+            this.nextList++;
 
-        }
+        },
+
+
     }
 }).mount('#app');

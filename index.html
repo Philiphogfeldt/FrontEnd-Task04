@@ -14,6 +14,8 @@
 <body>
   <h1>SwooshTrafik</h1>
   <div id="app">
+    <div id="clock">
+      <p id="time">{{currentTime}}</p>
     <h2>Avgångar från {{userInput}}</h2>
     <form @submit.prevent="updateStop(userInput)">
       <label for="stop-input">Skriv in en hållplats:</label>
