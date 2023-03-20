@@ -4,18 +4,45 @@ Vue.createApp({
             key: 'xOJnjrt9fhMMyvSANCOq9Cmrgiwa',
             secret: 'KruYoiK1rDkPfJ_P44Qy_zdfxL4a',
             accessToken: '67effa0e-f71e-393b-9012-e5117f0de90b',
-            stopId: '',
+            stopId: ['', '', ''],
             departures: [[], [], []],
             nextList: 0,
+            nextStopId: 0,
             userInput: '',
+            serverDateTime: null,
+            currentTime: '00:00:00',
+            buttonList: [],
+            newButton: '',
+
         };
     },
-    // created() {
-    //     this.getAccessToken()
-    //         .then(() => this.getStopId())
-    //         .then(() => this.getDepartures())
-    // },
+    created() {
+        setInterval(this.updateTime, 1000);
+
+        const savedDepartures = localStorage.getItem('departures');
+        if (savedDepartures) {
+            this.departures = JSON.parse(savedDepartures);
+        }
+        const buttons = localStorage.getItem('buttons');
+        if (buttons) {
+            this.buttonList = JSON.parse(buttons);
+        }
+        // const savedStopId = localStorage.getItem('stopId');
+        // if (savedStopId) {
+        //     this.stopId = JSON.parse(savedStopId);
+        // }
+    },
     methods: {
+        updateTime() {
+            let timNow = new Date;
+            this.currentTime =
+                `${this.dubbledigits(timNow.getHours())}:
+            ${this.dubbledigits(timNow.getMinutes())}:
+            ${this.dubbledigits(timNow.getSeconds())}`;
+        },
+        dubbledigits(number) {
+            return number < 10 ? '0' + number : number;
+        },
         async getAccessToken() {
             const url = 'https://api.vasttrafik.se/token';
             const callInfo = {
@@ -44,6 +71,7 @@ Vue.createApp({
             const dataForSearch = new URLSearchParams({
                 format: 'json',
                 input: this.userInput,
+                // input: this.userInput[this.nextSearchInput],
             });
 
             const response = await fetch(`${url}?${dataForSearch}`, {
@@ -52,10 +80,15 @@ Vue.createApp({
 
             const data = await response.json();
             this.stopId = data.LocationList.StopLocation[0].id;
+            // this.nextSearchInput++;
         },
         async getDepartures() {
             await this.getAccessToken();
             await this.getStopId();
+            // this.userInput[this.nextSearchInput].trim..
+            if (this.userInput.trim() === '') {
+                return;
+            }
 
             const url = 'https://api.vasttrafik.se/bin/rest.exe/v2/departureBoard';
             const callInfo = {
@@ -78,10 +111,29 @@ Vue.createApp({
             const serverDateTime = new Date(
                 `${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`
             );
-            // if(this.nextList === 2){
-            //     this.nextList = 0;
+            if (this.nextList === 3) {
+                this.nextList = 0;
+                this.sortList(data, serverDateTime, now);
+            }
+            else {
+                this.sortList(data, serverDateTime, now);
+            }
+
+            // if (this.nextStopId === 3){
+            //     this.nextStopId = 0;
             // }
-            // else{}
+            // else{
+            //     this.nextStopId = this.nextStopId;
+            // }
+
+            localStorage.setItem('departures', JSON.stringify(this.departures));
+            // localStorage.setItem('stopId', JSON.stringify(this.stopId))
+        },
+        updateStop(stopName) {
+            this.stopName = stopName;
+            this.getDepartures();
+        },
+        sortList(data, serverDateTime, now) {
             this.departures[this.nextList] = data.DepartureBoard.Departure
                 .map((departure) => {
                     const { sname, direction, time, date, realTime, realDate } = departure;
@@ -103,19 +155,43 @@ Vue.createApp({
                 })
                 .sort((a, b) => a.diff - b.diff)
                 .slice(0, 5);
-                this.nextList++;
+            this.nextList++;
+            // this.nextStopId++;
+
         },
-        updateStop(stopName) {
-            this.stopName = stopName;
+        clearAllLists() {
+            for (let i = 0; i < this.departures.length; i++) {
+                localStorage.clear(this.departures[i]);
+                this.departures[i] = [];
+            }
+            // for (let i = 0; i < this.stopId.length; i++) {
+            //     localStorage.clear(this.stopId[i]);
+            //     this.stopId[i] = '';
+            // }
+        },
+        addButton() {
+            this.buttonText = this.userInput;
+            if (this.buttonText) {
+                this.buttonList.push(this.buttonText);
+                this.buttonText = '';
+                localStorage.setItem('buttons', JSON.stringify(this.buttonList));
+                this.newButton = '';
+                // this.buttonlist.push(this.newButton);
+                // localStorage.setItem('buttons', JSON.stringify(this.buttons));
+                // this.newButton = '';
+            }
+
+        },
+        deleteButton(index) {
+            this.buttonList.splice(index, 1);
+            localStorage.setItem('buttons', JSON.stringify(this.buttonList));
+        },
+
+        useFavorite(buttonText) {
+            this.userInput = buttonText;
             this.getDepartures();
+
         },
-        // checkLists(){
-        //     if (totalLists === 1){
-        //         this.departures2 === this.departures
-        //     }
-        //     else if (totalLists === 2){
-        //         this.departures3 === this.departures2
-        //     }
-        // }
+
     }
 }).mount('#app');

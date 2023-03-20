@@ -1,0 +1,132 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+body {
+    display: grid;
+    justify-content: center;
+}
+
+#app {
+    display: grid;
+    justify-content: center;
+
+}
+
+#topLogo {
+    padding: 20px;
+}
+
+/* #clock {
+    display: grid;
+    justify-content: center;
+    padding: 20px;
+} */
+
+#formGrid {
+    display: grid;
+    grid-template:
+        'a b'
+    ;
+    margin-top: 10px;
+    justify-content: center;
+    width: 800px;
+}
+
+#leftGrid {
+    width: 500px;
+}
+
+#rightGrid {
+    width: 300px;
+}
+
+#formTitleCell {
+    display: grid;
+    /* width: 600px; */
+
+}
+
+h2 {
+    display: grid;
+}
+
+#columsGrid {
+    display: grid;
+    grid-template:
+        'a b'
+    ;
+    /* width: 600px; */
+}
+
+#formPartCell {
+    display: grid;
+    grid-template:
+        'formSubmit'
+        'stop-input'
+        'updateButton'
+    ;
+}
+
+/* #formSubmit {
+    display: grid;
+
+} */
+
+#stop-input {
+    display: grid;
+}
+
+#updateButton {
+    display: grid;
+}
+
+#favoritesCell {
+    display: grid;
+    justify-content: center;
+    grid-template:
+        'a'
+        'b'
+    ;
+    gap: 10px;
+    /* padding: 10px;
+    margin: 5px; */
+}
+
+#buttonContainer {
+    display: grid;
+    grid-template:
+        '1'
+        '2'
+        '3';
+    justify-items: end;
+}
+
+#listGrid {
+    margin: 10px;
+    padding: 5px;
+    gap: 10px;
+}
+
+ul {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+    ;
+}
+
+li {
+    display: grid;
+    gap: 10px;
+}
+
+
+
+#clearButton {
+    display: grid;
+    justify-self: center;
+    width: 200px;
+}
