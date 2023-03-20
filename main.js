@@ -164,6 +164,7 @@ Vue.createApp({
                 localStorage.clear(this.departures[i]);
                 this.departures[i] = [];
             }
+            this.nextList = 0;
             // for (let i = 0; i < this.stopId.length; i++) {
             //     localStorage.clear(this.stopId[i]);
             //     this.stopId[i] = '';
