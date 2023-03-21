@@ -4,7 +4,7 @@ Vue.createApp({
             key: 'xOJnjrt9fhMMyvSANCOq9Cmrgiwa',
             secret: 'KruYoiK1rDkPfJ_P44Qy_zdfxL4a',
             accessToken: '67effa0e-f71e-393b-9012-e5117f0de90b',
-            stopId: ['', '', ''],
+            // stopId: ['', '', ''],
             departures: [[], [], []],
             stopData: [
                 {
