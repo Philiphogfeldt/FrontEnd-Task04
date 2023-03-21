@@ -175,9 +175,15 @@ Vue.createApp({
             //     this.departures[i] = [];
             // }
             // this.counter = 0;
+            // this.stopData = [['','', []],['','', []],['','', []]]
+            // localStorage.setItem('stopData', JSON.stringify(this.stopData));
+
             for (let i = 0; i < this.stopData.length; i++) {
-                localStorage.clear(this.stopData.length[i]);
-                // this.stopData = [[], [], []];
+                localStorage.clear(this.stopData[i]);
+                this.stopData[i] = [
+                stopId = '',
+                depatureName = '',
+                departures = []];
             }
             this.counter = 0;
 
