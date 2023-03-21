@@ -4,11 +4,25 @@ Vue.createApp({
             key: 'xOJnjrt9fhMMyvSANCOq9Cmrgiwa',
             secret: 'KruYoiK1rDkPfJ_P44Qy_zdfxL4a',
             accessToken: '67effa0e-f71e-393b-9012-e5117f0de90b',
-            stopId: ['', '', ''],
-            departures: [[], [], []],
-            nextList: 0,
-            nextStopId: 0,
+            stopData: [
+                {
+                    stopId: '',
+                    depatureName: '',
+                    departures: []
+                },
+                {
+                    stopId: '',
+                    depatureName: '',
+                    departures: []
+                },
+                {
+                    stopId: '',
+                    depatureName: '',
+                    departures: []
+                }
+            ],
             userInput: '',
+            counter: 0,
             serverDateTime: null,
             currentTime: '00:00:00',
             buttonList: [],
@@ -17,26 +31,25 @@ Vue.createApp({
         };
     },
     created() {
+        this.updateTime();
         setInterval(this.updateTime, 1000);
 
-        const savedDepartures = localStorage.getItem('departures');
-        if (savedDepartures) {
-            this.departures = JSON.parse(savedDepartures);
+        const savedStopData  = localStorage.getItem('stopData');
+        if (savedStopData ) {
+            this.stopData = JSON.parse(savedStopData);
         }
+        
         const buttons = localStorage.getItem('buttons');
         if (buttons) {
             this.buttonList = JSON.parse(buttons);
         }
-        // const savedStopId = localStorage.getItem('stopId');
-        // if (savedStopId) {
-        //     this.stopId = JSON.parse(savedStopId);
-        // }
+
     },
     methods: {
         updateTime() {
             let timNow = new Date;
             this.currentTime =
-                `${this.dubbledigits(timNow.getHours())}:
+            `${this.dubbledigits(timNow.getHours())}:
             ${this.dubbledigits(timNow.getMinutes())}:
             ${this.dubbledigits(timNow.getSeconds())}`;
         },
@@ -71,21 +84,24 @@ Vue.createApp({
             const dataForSearch = new URLSearchParams({
                 format: 'json',
                 input: this.userInput,
-                // input: this.userInput[this.nextSearchInput],
+                // this.stopData[this.counter].depatureName
             });
 
             const response = await fetch(`${url}?${dataForSearch}`, {
                 headers: callInfo,
             });
 
+            this.stopData[this.counter].depatureName = this.userInput;
+
             const data = await response.json();
-            this.stopId = data.LocationList.StopLocation[0].id;
-            // this.nextSearchInput++;
+            this.stopData[this.counter].stopId = data.LocationList.StopLocation[0].id;
+
+
+            // this.stopId[this.nextStopId] = data.LocationList.StopLocation[0].id;
         },
         async getDepartures() {
             await this.getAccessToken();
             await this.getStopId();
-            // this.userInput[this.nextSearchInput].trim..
             if (this.userInput.trim() === '') {
                 return;
             }
@@ -98,7 +114,7 @@ Vue.createApp({
 
             const dataForSearch = new URLSearchParams({
                 format: 'json',
-                id: this.stopId,
+                id: this.stopData[this.counter].stopId,
                 date: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
                 time: `${now.getHours()}:${now.getMinutes()}`,
             });
@@ -111,30 +127,19 @@ Vue.createApp({
             const serverDateTime = new Date(
                 `${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`
             );
-            if (this.nextList === 3) {
-                this.nextList = 0;
+            if (this.counter === 3) {
+                this.counter = 0;
                 this.sortList(data, serverDateTime, now);
             }
             else {
                 this.sortList(data, serverDateTime, now);
             }
 
-            // if (this.nextStopId === 3){
-            //     this.nextStopId = 0;
-            // }
-            // else{
-            //     this.nextStopId = this.nextStopId;
-            // }
-
-            localStorage.setItem('departures', JSON.stringify(this.departures));
-            // localStorage.setItem('stopId', JSON.stringify(this.stopId))
-        },
-        updateStop(stopName) {
-            this.stopName = stopName;
-            this.getDepartures();
+            // localStorage.setItem('departures', JSON.stringify(this.departures));
+            // localStorage.setItem('stopData', JSON.stringify(this.stopData));
         },
         sortList(data, serverDateTime, now) {
-            this.departures[this.nextList] = data.DepartureBoard.Departure
+            this.stopData[this.counter].departures = data.DepartureBoard.Departure
                 .map((departure) => {
                     const { sname, direction, time, date, realTime, realDate } = departure;
 
@@ -155,20 +160,27 @@ Vue.createApp({
                 })
                 .sort((a, b) => a.diff - b.diff)
                 .slice(0, 5);
-            this.nextList++;
-            // this.nextStopId++;
+                
+            this.counter++;
+            localStorage.setItem('stopData', JSON.stringify(this.stopData));
+        },
 
+        updateStop(stopName) {
+            this.stopName = stopName;
+            this.getDepartures();
         },
         clearAllLists() {
-            for (let i = 0; i < this.departures.length; i++) {
-                localStorage.clear(this.departures[i]);
-                this.departures[i] = [];
-            }
-            this.nextList = 0;
-            // for (let i = 0; i < this.stopId.length; i++) {
-            //     localStorage.clear(this.stopId[i]);
-            //     this.stopId[i] = '';
+            // for (let i = 0; i < this.departures.length; i++) {
+            //     localStorage.clear(this.departures[i]);
+            //     this.departures[i] = [];
             // }
+            // this.counter = 0;
+            for (let i = 0; i < this.stopData.length; i++) {
+                localStorage.clear(this.stopData.length[i]);
+                // this.stopData = [[], [], []];
+            }
+            this.counter = 0;
+
         },
         addButton() {
             this.buttonText = this.userInput;
@@ -193,6 +205,5 @@ Vue.createApp({
             this.getDepartures();
 
         },
-
     }
 }).mount('#app');
