@@ -1,57 +1,103 @@
 * {
     margin: 0px;
     padding: 0px;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: Helvetica, Arial, sans-serif;
     font-weight: bold;
 }
 
 body {
     display: grid;
     justify-content: center;
+    background-image: url("Concrete.jpg");
 }
 
 #app {
     display: grid;
     justify-content: center;
 
+    background-image: url("swooshlogo1001.png");
+    background-size: 650px;
+    background-repeat: no-repeat;
+    height: 300px;
+    /* margin-bottom: -200px; */
+
+
 }
 
 #topLogo {
     padding: 20px;
+
 }
 
-/* #clock {
+#clock {
     display: grid;
-    justify-content: center;
-    padding: 20px;
-} */
+    /* margin-left: 100px; */
+
+    /* justify-content: center; */
+    /* padding: 20px; */
+    align-items: end;
+    /* width: 200px; */
+    justify-items: end;
+
+}
+
+#time {
+    border-style: solid;
+    width: fit-content;
+    height: fit-content;
+    background-color: #0079b4;
+    padding: 3px;
+}
 
 #formGrid {
     display: grid;
     grid-template:
-        'a b'
+        'a b c'
     ;
     margin-top: 10px;
-    justify-content: center;
+    /* justify-content: center; */
     width: 800px;
+    font-variant: small-caps;
+    color: white;
 }
 
 #leftGrid {
-    width: 500px;
+    display: grid;
+    /* grid-template:
+        'a'
+        'b'; */
+    width: 400px;
+    height: 200px;
+
+    align-items: end;
+
+}
+
+#midGrid {
+    display: grid;
+    width: 200px;
 }
 
 #rightGrid {
-    width: 300px;
+    display: grid;
+    /* width: 200px; */
+    justify-items: end;
+    align-items: start;
+    /* height: 200px; */
 }
 
 #formTitleCell {
     display: grid;
     /* width: 600px; */
-
+    background-color: #0079b4;
+    width: fit-content;
+    border-style: solid;
+    border-color: #0079b4;
 }
 
 h2 {
     display: grid;
+
 }
 
 #columsGrid {
@@ -59,41 +105,71 @@ h2 {
     grid-template:
         'a b'
     ;
+
     /* width: 600px; */
 }
 
-#formPartCell {
+#formCell {
+    display: grid;
+    width: 400px;
+    align-items: end;
+    /* padding: 5px; */
+}
+
+#formSubmit {
     display: grid;
     grid-template:
-        'formSubmit'
+        'labelText'
         'stop-input'
         'updateButton'
     ;
+    gap: 5px;
+    align-items: end;
+
+    width: fit-content;
+    /* border-style: solid;
+    border-color:#0079b4; */
+
 }
-
-/* #formSubmit {
-    display: grid;
-
-} */
 
 #stop-input {
     display: grid;
+    width: fit-content;
+    background-color: rgb(236, 231, 205);
+    padding: 3px;
+
+}
+
+#labelText {
+    width: fit-content;
+    display: grid;
+    background-color: #0079b4;
 }
 
 #updateButton {
     display: grid;
+    width: 100px;
 }
 
 #favoritesCell {
     display: grid;
-    justify-content: center;
+    justify-content: end;
     grid-template:
         'a'
         'b'
     ;
     gap: 10px;
+    position: relative;
+    z-index: 2;
+    width: fit-content;
+    /* height: 600px; */
     /* padding: 10px;
     margin: 5px; */
+}
+
+#formButtonCell {
+    display: grid;
+    justify-items: end;
 }
 
 #buttonContainer {
@@ -113,7 +189,7 @@ h2 {
 
 ul {
     display: grid;
-    gap: 10px;
+    gap: 3px;
     margin-top: 10px;
     ;
 }
@@ -121,6 +197,13 @@ ul {
 li {
     display: grid;
     gap: 10px;
+    width: fit-content;
+    background-color: rgb(236, 231, 205);
+    color: #0079b4;
+    border-style: solid;
+    padding: 1px;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 
@@ -129,4 +212,113 @@ li {
     display: grid;
     justify-self: center;
     width: 200px;
+    height: 35px;
+}
+
+#bottomButton {
+    background-image: url(bottomLine.png);
+    background-size: contain;
+}
+
+button {
+    background-color: #0079b4;
+    padding: 5px;
+    color: white;
+}
+
+@media (max-width: 850px) {
+    #app {
+        display: grid;
+        justify-content: center;
+
+        background-image: url("swooshlogo1001_sm.png");
+        background-size: 400px;
+        background-repeat: no-repeat;
+        height: 300px;
+        margin-left: 15px;
+    }
+
+    #formGrid {
+        display: grid;
+        grid-template:
+            'leftGrid midGrid'
+            'rightGrid rightGrid'
+        ;
+        margin-top: 10px;
+        /* justify-content: center; */
+        width: 450px;
+        font-variant: small-caps;
+        color: white;
+        gap: 3px;
+    }
+
+    #leftGrid {
+        display: grid;
+        /* grid-template:
+            'a'
+            'b'; */
+        width: 300px;
+        height: 200px;
+
+        align-items: end;
+
+    }
+
+    #rightGrid {
+        display: grid;
+        width: 300px;
+        justify-items: start;
+        align-items: start;
+        /* height: 200px; */
+    }
+
+    #favoritesCell {
+        display: grid;
+        justify-content: start;
+        grid-template:
+            'a'
+            'b'
+        ;
+        gap: 10px;
+        z-index: 2;
+        /* height: 600px; */
+        /* padding: 10px;
+        margin: 5px; */
+    }
+
+    #buttonContainer {
+        display: grid;
+        grid-template:
+            '1 2';
+        justify-items: start;
+    }
+
+    #formCell {
+        display: grid;
+        width: 300px;
+        align-items: end;
+        /* padding: 5px; */
+    }
+
+    #columsGrid {
+        display: grid;
+        grid-template:
+            'a'
+            'b'
+        ;
+
+        /* width: 600px; */
+    }
+}
+
+@media (min-width: 851px) {
+
+    #rightGrid {
+        display: grid;
+        width: 200px;
+        justify-items: end;
+        align-items: start;
+        height: 200px;
+    }
+
 }
