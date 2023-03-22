@@ -75,6 +75,7 @@ Vue.createApp({
 
             const data = await response.json();
             this.accessToken = data.access_token;
+
         },
         async getStopId() {
             const url = 'https://api.vasttrafik.se/bin/rest.exe/v2/location.name';
@@ -125,12 +126,11 @@ Vue.createApp({
             const serverDateTime = new Date(
                 `${data.DepartureBoard.serverdate} ${data.DepartureBoard.servertime}`
             );
+
+            this.sortList(data, serverDateTime, now);
+
             if (this.counter === 3) {
                 this.counter = 0;
-                this.sortList(data, serverDateTime, now);
-            }
-            else {
-                this.sortList(data, serverDateTime, now);
             }
 
         },
