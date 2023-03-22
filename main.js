@@ -27,7 +27,6 @@ Vue.createApp({
             currentTime: '00:00:00',
             buttonList: [],
             newButton: '',
-
         };
     },
     created() {
@@ -43,7 +42,6 @@ Vue.createApp({
         if (buttons) {
             this.buttonList = JSON.parse(buttons);
         }
-
     },
     methods: {
         updateTime() {
@@ -75,7 +73,6 @@ Vue.createApp({
 
             const data = await response.json();
             this.accessToken = data.access_token;
-
         },
         async getStopId() {
             const url = 'https://api.vasttrafik.se/bin/rest.exe/v2/location.name';
@@ -91,12 +88,9 @@ Vue.createApp({
                 headers: callInfo,
             });
 
-            this.stopData[this.counter].depatureName = this.userInput;
-
             const data = await response.json();
             this.stopData[this.counter].stopId = data.LocationList.StopLocation[0].id;
-
-
+            this.stopData[this.counter].depatureName = data.LocationList.StopLocation[0].name;
         },
         async getDepartures() {
             await this.getAccessToken();
@@ -104,7 +98,6 @@ Vue.createApp({
             if (this.userInput.trim() === '') {
                 return;
             }
-
             const url = 'https://api.vasttrafik.se/bin/rest.exe/v2/departureBoard';
             const callInfo = {
                 Authorization: `Bearer ${this.accessToken}`,
@@ -160,7 +153,6 @@ Vue.createApp({
             this.counter++;
             localStorage.setItem('stopData', JSON.stringify(this.stopData));
         },
-
         updateStop(stopName) {
             this.stopName = stopName;
             this.getDepartures();
@@ -173,7 +165,6 @@ Vue.createApp({
                 stop.departures = [];
             });
         },
-
         addButton() {
             this.buttonText = this.userInput;
             if (this.buttonText) {
