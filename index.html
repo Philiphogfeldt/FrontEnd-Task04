@@ -56,16 +56,16 @@
     </div>
 
     <div id="listGrid">
-      <ul v-for="stop in stopData">
-        <h3>{{stop.depatureName}}</h3>
-        <li v-for="(departure, index) in stop.departures" :key="index">
+      <ul>
+        <h3>{{stopData[0].depatureName}}</h3>
+        <li v-for="(departure, index) in stopData[0].departures" :key="index">
           {{departure.sname}} mot
           {{departure.direction}} avgår kl
           {{departure.time}} om
           {{departure.diff}} minuter
         </li>
       </ul>
-      <!-- <ul>
+      <ul>
         <h3>{{stopData[1].depatureName}}</h3>
         <li v-for="(departure, index) in stopData[1].departures" :key="index">
           {{departure.sname}} mot
@@ -82,10 +82,19 @@
           {{departure.time}} om
           {{departure.diff}} minuter
         </li>
+      </ul>
+      <!-- <ul v-for="stop in stopData">
+        <h3>{{stop.depatureName}}</h3>
+        <li v-for="(departure, index) in stop.departures" :key="index">
+          {{departure.sname}} mot
+          {{departure.direction}} avgår kl
+          {{departure.time}} om
+          {{departure.diff}} minuter
+        </li>
       </ul> -->
     </div>
     <div id="bottomButton">
-      <button type="submit" id="clearButton" @click="clearAllLists()">Clear lists</button>
+      <button type="submit" id="clearButton" @click="resetAll()">Clear lists</button>
     </div>
   </div>
 

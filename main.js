@@ -34,11 +34,11 @@ Vue.createApp({
         this.updateTime();
         setInterval(this.updateTime, 1000);
 
-        const savedStopData  = localStorage.getItem('stopData');
-        if (savedStopData ) {
+        const savedStopData = localStorage.getItem('stopData');
+        if (savedStopData) {
             this.stopData = JSON.parse(savedStopData);
         }
-        
+
         const buttons = localStorage.getItem('buttons');
         if (buttons) {
             this.buttonList = JSON.parse(buttons);
@@ -84,7 +84,6 @@ Vue.createApp({
             const dataForSearch = new URLSearchParams({
                 format: 'json',
                 input: this.userInput,
-                // this.stopData[this.counter].depatureName
             });
 
             const response = await fetch(`${url}?${dataForSearch}`, {
@@ -97,7 +96,6 @@ Vue.createApp({
             this.stopData[this.counter].stopId = data.LocationList.StopLocation[0].id;
 
 
-            // this.stopId[this.nextStopId] = data.LocationList.StopLocation[0].id;
         },
         async getDepartures() {
             await this.getAccessToken();
@@ -135,8 +133,6 @@ Vue.createApp({
                 this.sortList(data, serverDateTime, now);
             }
 
-            // localStorage.setItem('departures', JSON.stringify(this.departures));
-            // localStorage.setItem('stopData', JSON.stringify(this.stopData));
         },
         sortList(data, serverDateTime, now) {
             this.stopData[this.counter].departures = data.DepartureBoard.Departure
@@ -160,7 +156,7 @@ Vue.createApp({
                 })
                 .sort((a, b) => a.diff - b.diff)
                 .slice(0, 5);
-                
+
             this.counter++;
             localStorage.setItem('stopData', JSON.stringify(this.stopData));
         },
@@ -169,25 +165,15 @@ Vue.createApp({
             this.stopName = stopName;
             this.getDepartures();
         },
-        clearAllLists() {
-            // for (let i = 0; i < this.departures.length; i++) {
-            //     localStorage.clear(this.departures[i]);
-            //     this.departures[i] = [];
-            // }
-            // this.counter = 0;
-            // this.stopData = [['','', []],['','', []],['','', []]]
-            // localStorage.setItem('stopData', JSON.stringify(this.stopData));
-
-            for (let i = 0; i < this.stopData.length; i++) {
-                localStorage.clear(this.stopData[i]);
-                this.stopData[i] = [
-                stopId = '',
-                depatureName = '',
-                departures = []];
-            }
+        resetAll() {
             this.counter = 0;
-
+            this.stopData.forEach(stop => {
+                stop.stopId = '';
+                stop.depatureName = '';
+                stop.departures = [];
+            });
         },
+
         addButton() {
             this.buttonText = this.userInput;
             if (this.buttonText) {
@@ -195,9 +181,6 @@ Vue.createApp({
                 this.buttonText = '';
                 localStorage.setItem('buttons', JSON.stringify(this.buttonList));
                 this.newButton = '';
-                // this.buttonlist.push(this.newButton);
-                // localStorage.setItem('buttons', JSON.stringify(this.buttons));
-                // this.newButton = '';
             }
 
         },
