@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,26 +9,19 @@
   <script src="main.js" defer></script>
   <title>School and Back</title>
 </head>
-
 <body>
   <div id="app">
-
-
     <div id="topLogo">
       <h1>SwooshTrafik</h1>
     </div>
-
     <div id="formGrid">
-
       <div id="leftGrid">
         <div id="clock">
           <p id="time">{{currentTime}}</p>
         </div>
-
         <div id="formTitleCell">
           <h2>Avgångar från {{userInput}}</h2>
         </div>
-
         <div id="formCell">
           <form id="formSubmit" @submit.prevent="updateStop(userInput)">
             <label id="labelText" for="stop-input">Skriv in en hållplats:</label>
@@ -51,9 +43,7 @@
           </div>
         </div>
       </div>
-
     </div>
-
     <div id="listGrid">
       <ul>
         <h3>{{stopData[0].depatureName}}</h3>
@@ -87,7 +77,5 @@
       <button type="submit" id="clearButton" @click="resetAll()">Clear lists</button>
     </div>
   </div>
-
 </body>
-
 </html>
