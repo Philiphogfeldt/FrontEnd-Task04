@@ -19,8 +19,6 @@ body {
     background-size: 650px;
     background-repeat: no-repeat;
     height: 300px;
-    /* margin-bottom: -200px; */
-
 
 }
 
@@ -31,12 +29,7 @@ body {
 
 #clock {
     display: grid;
-    /* margin-left: 100px; */
-
-    /* justify-content: center; */
-    /* padding: 20px; */
     align-items: end;
-    /* width: 200px; */
     justify-items: end;
 
 }
@@ -55,7 +48,6 @@ body {
         'a b c'
     ;
     margin-top: 10px;
-    /* justify-content: center; */
     width: 800px;
     font-variant: small-caps;
     color: white;
@@ -63,9 +55,6 @@ body {
 
 #leftGrid {
     display: grid;
-    /* grid-template:
-        'a'
-        'b'; */
     width: 400px;
     height: 200px;
 
@@ -80,15 +69,12 @@ body {
 
 #rightGrid {
     display: grid;
-    /* width: 200px; */
     justify-items: end;
     align-items: start;
-    /* height: 200px; */
 }
 
 #formTitleCell {
     display: grid;
-    /* width: 600px; */
     background-color: #0079b4;
     width: fit-content;
     border-style: solid;
@@ -106,14 +92,12 @@ h2 {
         'a b'
     ;
 
-    /* width: 600px; */
 }
 
 #formCell {
     display: grid;
     width: 400px;
     align-items: end;
-    /* padding: 5px; */
 }
 
 #formSubmit {
@@ -127,8 +111,6 @@ h2 {
     align-items: end;
 
     width: fit-content;
-    /* border-style: solid;
-    border-color:#0079b4; */
 
 }
 
@@ -162,9 +144,6 @@ h2 {
     position: relative;
     z-index: 2;
     width: fit-content;
-    /* height: 600px; */
-    /* padding: 10px;
-    margin: 5px; */
 }
 
 #formButtonCell {
@@ -245,7 +224,6 @@ button {
             'rightGrid rightGrid'
         ;
         margin-top: 10px;
-        /* justify-content: center; */
         width: 450px;
         font-variant: small-caps;
         color: white;
@@ -254,9 +232,6 @@ button {
 
     #leftGrid {
         display: grid;
-        /* grid-template:
-            'a'
-            'b'; */
         width: 300px;
         height: 200px;
 
@@ -269,7 +244,6 @@ button {
         width: 300px;
         justify-items: start;
         align-items: start;
-        /* height: 200px; */
     }
 
     #favoritesCell {
@@ -281,9 +255,6 @@ button {
         ;
         gap: 10px;
         z-index: 2;
-        /* height: 600px; */
-        /* padding: 10px;
-        margin: 5px; */
     }
 
     #buttonContainer {
@@ -297,7 +268,6 @@ button {
         display: grid;
         width: 300px;
         align-items: end;
-        /* padding: 5px; */
     }
 
     #columsGrid {
@@ -306,8 +276,6 @@ button {
             'a'
             'b'
         ;
-
-        /* width: 600px; */
     }
 }
 
