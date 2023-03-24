@@ -19,7 +19,7 @@ test('Test localstorage ID', async ({ page }) => {
 
   expect(storedValue).toBe('9021014004637000');
 
-;
+  ;
 });
 
 
@@ -35,7 +35,7 @@ test('Test for checking correct listOne header', async ({ page }) => {
   const listOneHeader = await page.$eval('#listOne', x => x.textContent.trim());
   expect(listOneHeader).toBe('Sexdrega, Svenljunga');
 
-;
+  ;
 });
 
 test('testButton', async ({ page }) => {
@@ -71,7 +71,7 @@ test('Test localstorage list', async ({ page }) => {
 
   expect(storedValue).toBe('5');
 
-;
+  ;
 });
 
 

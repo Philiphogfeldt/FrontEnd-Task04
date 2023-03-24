@@ -42,7 +42,7 @@ Vue.createApp({
         if (buttons) {
             this.buttonList = JSON.parse(buttons);
         }
-         
+
     },
     methods: {
         updateTime() {
@@ -185,7 +185,7 @@ Vue.createApp({
             this.userInput = buttonText;
             this.getDepartures();
 
-        },          
-        
+        },
+
     }
 }).mount('#app');
